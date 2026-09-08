@@ -1,6 +1,8 @@
-# The Grand Tour · A Circus Story
+# The Grand Tour · Riverside Meadow
 
-A playable, illustrated circus management demo based on [the original design](docs/design.md). Build a little touring circus, find an audience across Poland, and make your next show better than the last.
+A playable circus management slice on one procedural, isometric site. Build paths and facilities, recruit a crew, schedule performances in multiple tents, and operate a profitable day. Touring, world maps, rivals, and seasons have been removed from this demo.
+
+[Play on GitHub Pages](https://lf-netizen.github.io/circus-simulator-game/)
 
 ## Run locally
 
@@ -9,14 +11,9 @@ Requires Node.js 22+ and pnpm 10.
 ```sh
 pnpm install
 pnpm dev
-```
-
-Open the URL printed by Vite (normally http://localhost:5173).
-
-```sh
+pnpm test      # Simulation and save validation tests
 pnpm build     # TypeScript check and static production build
 pnpm preview   # Serve the production build locally
-pnpm test      # Simulation and save validation tests
 ```
 
 ## GitHub Pages
@@ -46,32 +43,34 @@ Deploy the contents of `dist/` to any static host: GitHub Pages, Cloudflare Page
 
 React 19, TypeScript, Vite, Tailwind CSS 4, Lucide, Vitest, and pnpm. Illustrations are editable SVG and fonts are bundled locally; there are no runtime requests to third-party services.
 
-## Play the demo
+## Play the slice
 
-1. **Set up camp** in Kraków. Arrange the big top, wagon, generator, and optional popcorn cart. Noisy living quarters hurt show quality; a popcorn stall near the entrance earns more.
-2. **Prepare your troupe.** Train performers, buy costumes, or recruit an illusionist and a tightrope artist. Training costs time and energy; overnight rest restores energy and charges upkeep.
-3. **Promote the show.** Set a 15–70 zł ticket price and buy local poster, radio, or social campaigns. Each channel allows three campaign purchases per stop. Weather, price, reputation, and repeat visits affect demand.
-4. **Plan and run the performance.** Reorder acts, add an interval, and build a 90–210 minute show. Act order and performer readiness affect audience ratings. Advance each act and choose how to handle the evening’s mishap.
-5. **Collect the takings and travel.** Show results account for tickets, concessions, wages, and operating expenses. Buy fuel and water, plan your next stop, and move to another of eight Polish cities.
+1. **Build your grounds.** Begin with 22,000 zł and an empty 20 × 20 meadow. Buy tents, generators, water, trailers, guest services, and scenery. Lay entrance-connected paths; clear trees and rocks to expand. Buildings have real footprints, rotation, collision checks, maintenance costs, and demolition refunds. Map overlays show access and utilities.
+2. **Recruit and assign.** Performers provide distinct acts. Assign a technician to each tent, vendors to attractions and concessions, and beds to your crew. Training improves skill but spends cash and energy. Quiet, serviced trailers restore more energy overnight.
+3. **Write the daily programme.** Choose a tent, day, time, ticket price, and 60–120 minute running order. Performer and tent conflicts are blocked. Big tops support aerial acts. Order, fatigue, ticket price, weather, services, and local posters affect the forecast. All tents share a finite daily audience.
+4. **Open the gates.** Construction pauses while the day runs from 09:00 to 22:00. Pause and choose 1×, 3×, or 6× speed. Shows begin on schedule, groups of guests walk the actual path network, concessions earn money, and an equipment incident needs your decision.
+5. **Review and improve.** Tickets settle after each show. Closing charges wages and maintenance, consumes stock, and reports operating profit. Prepare tomorrow to rest the crew, replenish supplies, book more shows, and reinvest.
 
-Six performances complete a season. Reputation carries forward. Your audience-weighted career rating and total tickets are compared against clearly identified rival benchmarks. Running out of money ends the game; you can start over or restore an export.
+For a quick start, **Build starter camp** purchases a working layout, five crew, and a noon show for 8,070 zł. It uses the same construction, recruitment, and scheduling rules as manual play. Add a second performance later in the day or expand with another tent and technician.
 
-Time advances only through actions. Planning is free. Actions that cross 23:00 pause for overnight rest; performances must finish by closing.
+The local milestone is 300 admissions, six completed shows, and 60 reputation while solvent. Continue building after reaching it. Running out of money ends the attempt; restart the seed or import a backup.
 
 ## Saves
 
-Progress is automatically stored in this browser’s `localStorage` after each change. **Saves & settings → Export save** downloads a versioned JSON file; **Import save** restores it, including an in-progress show. Import validates nested state before replacing progress. Invalid files leave your adventure intact. Export before clearing browser data or switching devices. If storage is unavailable, play continues in memory and the sidebar asks you to export.
+Changes automatically save to browser `localStorage`. **Saves and settings → Export site** downloads portable JSON; **Import site** restores it with the clock paused. Imports validate terrain, building footprints, crew assignments, programmes, finances, and live simulation state. Invalid files leave progress intact. If browser storage is unavailable, play continues in memory and the interface asks you to export.
 
-## Demo scope
+This slice uses save version 2 and the separate `grand-tour-site-v2` storage key. Existing touring-demo saves are left untouched; they cannot be imported into this location slice.
 
-This is a focused vertical slice of the larger design, with a starting troupe and equipment so the loop is immediately playable. Economics and travel are intentionally compact: wages are paid per show, cities have one pitch and fixed weather, rivals are benchmark scores, and three scripted show surprises rotate across performances. Detailed scouting, animals, vehicle logistics, dynamic rival routes, negotiated recruitment, multiyear leaderboards, and the full segment/performer constraints are future expansion work.
+## Scope and structure
 
-## Project structure
+This is a focused management demo, not a full individual-guest simulation. Animated walkers represent visitor groups; food, comfort, and attendance use aggregate rules. The equipment incident is scripted. Recruitment uses a fixed roster, while terrain and weather are seeded. See [the implemented rules](docs/single-location.md) and [verification notes](docs/verification.md).
 
-- `src/game/` — data, pure simulation reducer, save validation, and regression tests.
-- `src/components/` — custom SVG circus environment and route map.
-- `src/views/` — overview, troupe, grounds, performance, and management screens.
-- `src/App.tsx` — navigation, autosave, settings, and show results.
-- `src/styles.css` — responsive visual system with Tailwind integration.
+- `src/site/spatial.ts` — seeded terrain, footprints, pathfinding, utilities, and building bonuses.
+- `src/site/engine.ts` — simulation reducer, forecasts, scheduling, and economy.
+- `src/site/persistence.ts` — versioned save validation and browser storage.
+- `src/site/IsoMap.tsx` — interactive SVG map and animated visitors.
+- `src/site/*View.tsx` — construction, crew, schedule, and cashbook interfaces.
+- `src/site/SiteApp.tsx` — application shell, time controls, autosave, and reports.
+- `src/site/engine.test.ts` — simulation and save regression tests.
 
-See [verification notes](docs/verification.md) for browser checks and screenshots.
+The [original broader design](docs/design.md) remains as reference; it does not describe the current demo's scope.
