@@ -21,19 +21,24 @@ pnpm test      # Simulation and save validation tests
 
 ## GitHub Pages
 
-Live site: https://lf-netizen.github.io/circus-simulator-game/
+Site: https://lf-netizen.github.io/circus-simulator-game/
 
-Every push to `main` runs the tests, builds the app, and deploys `dist/` through `.github/workflows/deploy.yml`. The repository uses **Settings → Pages → Source: GitHub Actions**. No deployment token or additional repository secret is required.
+The app is built **locally** and the generated files are pushed over SSH to `gh-pages`. Source code stays on `main`. The deployment script preserves branch history and never force-pushes or switches your working branch.
 
-For future updates:
+To update the source and publish:
 
 ```sh
 git add .
 git commit -m "Describe your changes"
 git push
+pnpm deploy
 ```
 
-`main` tracks `origin/main`, and `origin` uses `git@github.com:lf-netizen/circus-simulator-game.git`. Deployment progress appears in the repository’s Actions tab.
+`pnpm deploy` runs the tests, builds `dist/`, then publishes it to `origin/gh-pages` with `.nojekyll`. It uses your existing Git/SSH credentials; no GitHub CLI login, access token, or deployment secret is required to push the build.
+
+GitHub Pages must serve **Deploy from a branch → gh-pages → /(root)** in the repository's Pages settings. The GitHub Actions workflow only checks source changes; publishing is controlled by `pnpm deploy`.
+
+`main` tracks `origin/main`. Remote: `git@github.com:lf-netizen/circus-simulator-game.git`.
 
 ## Other static hosts
 
