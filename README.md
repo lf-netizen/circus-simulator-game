@@ -31,12 +31,12 @@ To update the source and publish:
 git add .
 git commit -m "Describe your changes"
 git push
-pnpm deploy
+pnpm run deploy
 ```
 
-`pnpm deploy` runs the tests, builds `dist/`, then publishes it to `origin/gh-pages` with `.nojekyll`. It uses your existing Git/SSH credentials; no GitHub CLI login, access token, or deployment secret is required to push the build.
+`pnpm run deploy` runs the tests, builds `dist/`, then publishes it to `origin/gh-pages` with `.nojekyll`. It uses your existing Git/SSH credentials; no GitHub CLI login, access token, or deployment secret is required to push the build.
 
-GitHub Pages must serve **Deploy from a branch → gh-pages → /(root)** in the repository's Pages settings. The GitHub Actions workflow only checks source changes; publishing is controlled by `pnpm deploy`.
+GitHub Pages must serve **Deploy from a branch → gh-pages → /(root)** in the repository's Pages settings. The GitHub Actions workflow only checks source changes; publishing is controlled by `pnpm run deploy`.
 
 `main` tracks `origin/main`. Remote: `git@github.com:lf-netizen/circus-simulator-game.git`.
 

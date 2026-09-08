@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url';
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const dist = join(root, 'dist');
 const git = (args, cwd = root) => execFileSync('git', args, { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'inherit'] }).trim();
-if (!existsSync(join(dist, 'index.html'))) throw new Error('Build the game before deploying. Run pnpm deploy.');
+if (!existsSync(join(dist, 'index.html'))) throw new Error('Build the game before deploying. Run pnpm run deploy.');
 const remote = git(['remote', 'get-url', 'origin']);
 const authorName = git(['config', 'user.name']);
 const authorEmail = git(['config', 'user.email']);
